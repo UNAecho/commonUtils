@@ -191,7 +191,7 @@ def key_input(input_str=''):
         else:
             win32api.keybd_event(VK_CODE[c], 0, 0, 0)
             win32api.keybd_event(VK_CODE[c], 0, win32con.KEYEVENTF_KEYUP, 0)
-        time.sleep(0.02)
+        time.sleep(0.03)
 
 
 def key_zuhe_input(str1,str2):
