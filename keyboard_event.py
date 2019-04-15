@@ -149,20 +149,29 @@ VK_CODE = {
     '\\':0xDC,
     ']':0xDD,
     "'":0xDE}
+
+
 class POINT(Structure):
     _fields_ = [("x", c_ulong),("y", c_ulong)]
+
+
 def get_mouse_point():
     po = POINT()
     windll.user32.GetCursorPos(byref(po))
     return int(po.x), int(po.y)
+
+
 def get_mouse_pointX():
     po = POINT()
     windll.user32.GetCursorPos(byref(po))
     return int(po.x)
+
+
 def get_mouse_pointY():
     po = POINT()
     windll.user32.GetCursorPos(byref(po))
     return int(po.y)
+
 
 def mouse_click(x=None,y=None):
     if not x is None and not y is None:
@@ -171,12 +180,15 @@ def mouse_click(x=None,y=None):
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
 
+
 def mouse_dclick(x=None,y=None):
     if not x is None and not y is None:
         mouse_move(x,y)
         time.sleep(0.05)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+
+
 def mouse_move(x,y):
     windll.user32.SetCursorPos(x, y)
 
