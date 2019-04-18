@@ -224,3 +224,18 @@ def input_enter():
     win32api.keybd_event(0x0D,0,0,0)
     win32api.keybd_event(0x0D,0,win32con.KEYEVENTF_KEYUP,0)
     time.sleep(0.01)
+
+
+def paste(os_type):
+    if os_type =='Windows':
+        win32api.keybd_event(VK_CODE['ctrl'], 0, 0, 0)
+        win32api.keybd_event(VK_CODE['v'], 0, 0, 0)
+        win32api.keybd_event(VK_CODE['v'], 0, win32con.KEYEVENTF_KEYUP, 0)
+        win32api.keybd_event(VK_CODE['ctrl'], 0, win32con.KEYEVENTF_KEYUP, 0)
+        time.sleep(0.01)
+    else:
+        win32api.keybd_event(VK_CODE['shift'], 0, 0, 0)
+        win32api.keybd_event(VK_CODE['ins'], 0, 0, 0)
+        win32api.keybd_event(VK_CODE['ins'], 0, win32con.KEYEVENTF_KEYUP, 0)
+        win32api.keybd_event(VK_CODE['shift'], 0, win32con.KEYEVENTF_KEYUP, 0)
+        time.sleep(0.01)

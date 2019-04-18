@@ -14,8 +14,6 @@ win32gui.EnumWindows(get_all_hwnd, 0)
 
 def set_foreground_window(window_name):
     for handles_key, handles_value in hwnd_title.items():
-        if handles_value == window_name:
+        if window_name in handles_value:
             win32gui.SetForegroundWindow(handles_key)
             break
-        else:
-            print("no such windows named " + window_name + " .")
