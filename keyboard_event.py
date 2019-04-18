@@ -196,10 +196,10 @@ def mouse_move(x,y):
 def key_input(input_str=''):
     for c in input_str:
         if c == '_':
-            win32api.keybd_event(VK_CODE['shift'], 0, 0, 0)
+            win32api.keybd_event(VK_CODE['left_shift'], 0, 0, 0)
             win32api.keybd_event(VK_CODE['-'], 0, 0, 0)
             win32api.keybd_event(VK_CODE['-'], 0, win32con.KEYEVENTF_KEYUP, 0)
-            win32api.keybd_event(VK_CODE['shift'], 0, win32con.KEYEVENTF_KEYUP, 0)
+            win32api.keybd_event(VK_CODE['left_shift'], 0, win32con.KEYEVENTF_KEYUP, 0)
         else:
             win32api.keybd_event(VK_CODE[c], 0, 0, 0)
             win32api.keybd_event(VK_CODE[c], 0, win32con.KEYEVENTF_KEYUP, 0)
@@ -227,7 +227,7 @@ def input_enter():
 
 
 def paste(os_type):
-    if os_type =='Windows':
+    if os_type == 'Windows':
         win32api.keybd_event(VK_CODE['ctrl'], 0, 0, 0)
         win32api.keybd_event(VK_CODE['v'], 0, 0, 0)
         win32api.keybd_event(VK_CODE['v'], 0, win32con.KEYEVENTF_KEYUP, 0)

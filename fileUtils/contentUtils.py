@@ -66,8 +66,8 @@ def content_segmentation_and_splicing(content, tblproperties_index, table_name, 
 # env:选择INT、PREPROD、PROD
 def get_location_address(table_name,env):
     if env == 'PREPROD':
-        return 'LOCATION \'hdfs://ciodevha/data/insight/cio/intaudit.pp/'+table_name+'\''
-    return 'LOCATION \'hdfs://cioprdha/data/insight/cio/internalaudit/'+table_name+'\''
+        return 'LOCATION \'hdfs://cioprdha/data/insight/cio/intaudit.pp/'+table_name+'\''
+    return 'LOCATION \'hdfs://ciodevha/data/insight/cio/internalaudit/'+table_name+'\''
 
 
 # # 验证正则表达式的正确性
@@ -86,3 +86,20 @@ def text(input_file_dir):
                 # 提取当前表名
                 table_name = extract_sql_table_name_lower(content)
                 print(table_name)
+
+
+def replace_content_in_dir(path):
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            with open(os.path.join(root, name), 'r+') as f_r:
+                # 加延迟，防止打印串位置
+                time.sleep(0.05)
+                # 提取正文
+                content = f_r.read()
+                if 'ciodevha/data/insight/cio/internalaudit' in content:
+                    new_content = content.replace('ciodevha/data/insight/cio/internalaudit','cioprdha/data/insight/cio/intaudit.pp')
+                else:
+                    print(name)
+                    raise Exception
+            with open(os.path.join(root, name), 'w') as f_w:
+                f_w.write(new_content)
