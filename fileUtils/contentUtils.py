@@ -30,7 +30,7 @@ def batch_modify_file_contents(input_file_dir, env):
                 else:
                     tblproperties_index = [len(content)]
                     count_line = content.find('\n')
-                    if count_line <1:
+                    if count_line < 1:
                         content = content + ' ' + r"TBLPROPERTIES('orc.compress'='SNAPPY')"
                     else:
                         content = content + '\n ' + r"TBLPROPERTIES('orc.compress'='SNAPPY')"
