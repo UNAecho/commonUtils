@@ -5,6 +5,7 @@ import windowUtils
 import pyperclip
 import os
 
+
 def input_with_txt_end_with_enter(filepath):
     with open(filepath, 'r') as f:
         # 按行读取，/n分割,输入之后按回车结束
