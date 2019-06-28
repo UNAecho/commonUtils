@@ -1,6 +1,6 @@
 import win32api
 from operation import mouse_click
-import CVUtils
+import cvUtils
 from time import sleep
 from repository import templateEntity
 

@@ -3,7 +3,7 @@ import win32con
 import time
 import keycode
 import numpy as np
-import CVUtils
+import cvUtils
 import cv2 as opencv
 from PIL import ImageGrab
 
@@ -80,3 +80,9 @@ def mouse_drag_to_target(x, y, target_x, target_y):
     win32api.mouse_event(win32con.MOUSEEVENTF_ABSOLUTE + win32con.MOUSEEVENTF_MOVE, mw, mh, 0, 0)
     time.sleep(0.2)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+
+
+# win32con.MOUSEEVENTF_WHEEL代表鼠标中轮，第四个参数正数代表往上轮滚，负数代表往下
+
+def scroll_down():
+    win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, 0, 0, -256)

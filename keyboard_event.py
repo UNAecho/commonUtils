@@ -3,6 +3,7 @@ import win32con
 import win32gui
 from ctypes import *
 import time
+import re
 VK_CODE = {
     'backspace':0x08,
     'tab':0x09,
@@ -194,6 +195,10 @@ def mouse_move(x,y):
 
 
 def key_input(input_str=''):
+    if re.search("^F\d+$", input_str,):
+        win32api.keybd_event(VK_CODE[input_str], 0, 0, 0)
+        win32api.keybd_event(VK_CODE[input_str], 0, win32con.KEYEVENTF_KEYUP, 0)
+        return
     for c in input_str:
         if c == '_':
             win32api.keybd_event(VK_CODE['left_shift'], 0, 0, 0)
