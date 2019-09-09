@@ -1,6 +1,6 @@
 import win32api
 import win32con
-import time
+from time import sleep
 import keycode
 import numpy as np
 import cvUtils
@@ -12,9 +12,9 @@ from PIL import ImageGrab
 def mouse_click(x=None, y=None):
     if x is not None and y is not None:
         mouse_move(x, y)
-        time.sleep(0.2)
+        sleep(0.2)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
-    time.sleep(0.1)
+    sleep(0.1)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
 
 
@@ -23,10 +23,10 @@ def mouse_click(x=None, y=None):
 def mouse_click_cv(x, y, template_name=None, window_info_tuple=None):
     for i in range(2):
         mouse_move(x, y)
-        time.sleep(0.1)
+        sleep(0.1)
         screen_before = np.array(ImageGrab.grab(window_info_tuple))
         mouse_click(x, y)
-        time.sleep(0.5)
+        sleep(0.5)
         screen_after = np.array(ImageGrab.grab(window_info_tuple))
         # 先是RGB转换为BGR，然后再转为灰度图
         gray_img_before = opencv.cvtColor(opencv.cvtColor(screen_before, opencv.COLOR_RGB2BGR), opencv.COLOR_BGR2GRAY)
@@ -46,7 +46,7 @@ def mouse_click_cv(x, y, template_name=None, window_info_tuple=None):
 def mouse_dclick(x=None, y=None):
     if x is not None and y is not None:
         mouse_move(x, y)
-        time.sleep(0.05)
+        sleep(0.05)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
@@ -63,22 +63,22 @@ def mouse_move(x, y):
 def key_input(str):
     for c in str:
         win32api.keybd_event(keycode[c],0,0,0)
-        time.sleep(0.01)
+        sleep(0.01)
         win32api.keybd_event(keycode[c],0,win32con.KEYEVENTF_KEYUP,0)
-        time.sleep(0.02)
+        sleep(0.02)
 
 
 # 鼠标拖拽至目标处
 def mouse_drag_to_target(x, y, target_x, target_y):
     mouse_move(x, y)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
-    time.sleep(0.2)
+    sleep(0.2)
     # GetSystemMetrics()函数参数为索引，共75个索引，具体可在网上查到
     # 目前我们仅需要第0索引：当前x轴分辨率；第1索引：当前y轴分辨率
     mw = int(target_x * 65535 / win32api.GetSystemMetrics(0))
     mh = int(target_y * 65535 / win32api.GetSystemMetrics(1))
     win32api.mouse_event(win32con.MOUSEEVENTF_ABSOLUTE + win32con.MOUSEEVENTF_MOVE, mw, mh, 0, 0)
-    time.sleep(0.2)
+    sleep(0.2)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
 
 
@@ -86,3 +86,13 @@ def mouse_drag_to_target(x, y, target_x, target_y):
 
 def scroll_down():
     win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, 0, 0, -256)
+
+
+def wait_to_click(template_file_name):
+    while True:
+        aim_coordinate = cvUtils.identify_find_template_or_not(template_file_name, 0.8)
+        if aim_coordinate:
+            mouse_click(aim_coordinate['x'],['y'])
+            break
+        sleep(1)
+    return
