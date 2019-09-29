@@ -34,8 +34,8 @@ def read_number_of_screen(screenshot_x_left, screenshot_y_upper, screenshot_x_ri
         return "0"
 
 
-def read_chi_of_screen(file_path, screenshot_x, screenshot_y, screenshot_wight_x, screenshot_high_y):
-    getScreenshot(file_path, screenshot_x,
-                  screenshot_y, screenshot_wight_x, screenshot_high_y)
-    read_screen_text = pytesseract.image_to_string(Image.open(file_path), lang='chi_sim')
+def read_chi_of_screen(screenshot_x_left, screenshot_y_upper, screenshot_x_right, screenshot_y_bottom):
+    im = ImageGrab.grab((screenshot_x_left, screenshot_y_upper, screenshot_x_right, screenshot_y_bottom)).convert(
+        'L').point(lambda x: 0 if x == 255 else 255)
+    read_screen_text = pytesseract.image_to_string(im, lang='chi_sim')
     return read_screen_text
