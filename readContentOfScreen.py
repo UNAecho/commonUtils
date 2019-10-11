@@ -7,6 +7,7 @@ import time
 import os
 from FileUtils import del_file_from_dir
 import numpy as np
+import cv2
 
 
 # 读取截图中的数字，多数用于各种挑战的数量剩余
@@ -62,36 +63,48 @@ def dislodge_noise_point(im, noise_pixel_value):
     return im
 
 
+def resize_img(input_img, width, hight):
+    # 用cv2缩放图片,interpolation为插值方法，本次使用INTER_CUBIC，适用于图像放大
+    img = cv2.resize(input_img, (width, hight), interpolation=cv2.INTER_CUBIC)
+    return img
+
+
 def read_number_of_screen(screenshot_x_left, screenshot_y_upper, screenshot_x_right, screenshot_y_bottom):
     # try:
-        # 截屏，图片直接加入内存中,并使用.convert('L')处理为灰度图。
-        im = ImageGrab.grab((screenshot_x_left, screenshot_y_upper, screenshot_x_right, screenshot_y_bottom))
-        # 灰度以及二值化，然后进行消噪。
-        # 本次认为0像素黑点为干扰分析的噪音点，因为OCR想要读取的数字也是被处理为0像素
-        im = dislodge_noise_point(gray_and_binaryzation(im, 255), 0)
-        read_screen_text = pytesseract.image_to_string(im)
-        if read_screen_text is None or "":
-            print("没读出来，这程序写的什么破玩意")
-        # 返回正常读出的int数字
-        if read_screen_text.isdigit():
-            return read_screen_text
-        # 如果读出来非正常数字，保存为文件留以后训练集使用
-        else:
-            error_dir = "TestDir"
-            error_file_list = os.listdir(error_dir)
-            if error_file_list.__len__() > 100:
-                del_file_from_dir(error_dir)
-            im.save(error_dir + "//error_num" + str(int(time.time())) + ".png")
+    # 截屏，图片直接加入内存中,并使用.convert('L')处理为灰度图。
+    im = ImageGrab.grab((screenshot_x_left, screenshot_y_upper, screenshot_x_right, screenshot_y_bottom))
+    # 灰度以及二值化，然后进行消噪。
+    # 本次认为0像素黑点为干扰分析的噪音点，因为OCR想要读取的数字也是被处理为0像素
+    im = dislodge_noise_point(gray_and_binaryzation(im, 255), 0)
+    # PIL图片转化为cv2图片格式(RGB2BGR)
+    im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
+    # 将图像缩放至960*560，方便识别
+    im = resize_img(im, 960, 560)
+    read_screen_text = pytesseract.image_to_string(im, lang='num')
+    if read_screen_text is None or "":
+        print("没读出来，这程序写的什么破玩意")
+    # 返回正常读出的int数字
+    if read_screen_text.isdigit():
         return read_screen_text
-        # return "0"
-    # except Exception as e:
-    #     print("读取数字出错！错误信息：" + str(e))
-    #     # 输出读取错误的图片，方便人工debug原因
-    #     # 请定期清理文件，不然文件夹体积会越来越大
-    #     # error_image_filepath = 'errorImage\\' + datetime.now().strftime('%Y%m%d%H%M%S') + '.png'
-    #     # shutil.copyfile(file_path, error_image_filepath)
-    #     # print("读取出错的图片路径为：" + error_image_filepath+"，请定期清理，防止文件夹越来越大")
-    #     return "0"
+    # 如果读出来非正常数字，保存为文件留以后训练集使用
+    else:
+        error_dir = "TestDir"
+        error_file_list = os.listdir(error_dir)
+        if error_file_list.__len__() > 100:
+            del_file_from_dir(error_dir)
+        im.save(error_dir + "//error_num" + str(int(time.time())) + ".png")
+    return read_screen_text
+    # return "0"
+
+
+# except Exception as e:
+#     print("读取数字出错！错误信息：" + str(e))
+#     # 输出读取错误的图片，方便人工debug原因
+#     # 请定期清理文件，不然文件夹体积会越来越大
+#     # error_image_filepath = 'errorImage\\' + datetime.now().strftime('%Y%m%d%H%M%S') + '.png'
+#     # shutil.copyfile(file_path, error_image_filepath)
+#     # print("读取出错的图片路径为：" + error_image_filepath+"，请定期清理，防止文件夹越来越大")
+#     return "0"
 
 
 def read_chi_of_screen(screenshot_x_left, screenshot_y_upper, screenshot_x_right, screenshot_y_bottom):
