@@ -77,7 +77,7 @@ def read_number_of_screen(screenshot_x_left, screenshot_y_upper, screenshot_x_ri
     # 本次认为0像素黑点为干扰分析的噪音点，因为OCR想要读取的数字也是被处理为0像素
     im = dislodge_noise_point(gray_and_binaryzation(im, 255), 0)
     # PIL图片转化为cv2图片格式(RGB2BGR)
-    im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
+    im = cv2.cvtColor(np.asarray(im), cv2.COLOR_RGB2BGR)
     # 将图像缩放至960*560，方便识别
     im = resize_img(im, 960, 560)
     read_screen_text = pytesseract.image_to_string(im, lang='num')
