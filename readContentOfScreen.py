@@ -79,8 +79,8 @@ def read_number_of_screen(screenshot_x_left, screenshot_y_upper, screenshot_x_ri
     # PIL图片转化为cv2图片格式(RGB2BGR)
     im = cv2.cvtColor(np.asarray(im), cv2.COLOR_RGB2BGR)
     # 将图像缩放至960*560，方便识别
-    im = resize_img(im, 960, 560)
-    read_screen_text = pytesseract.image_to_string(im, lang='num')
+    im_cv2 = resize_img(im, 960, 560)
+    read_screen_text = pytesseract.image_to_string(im_cv2, lang='num')
     if read_screen_text is None or "":
         print("没读出来，这程序写的什么破玩意")
     # 返回正常读出的int数字
@@ -92,7 +92,7 @@ def read_number_of_screen(screenshot_x_left, screenshot_y_upper, screenshot_x_ri
         error_file_list = os.listdir(error_dir)
         if error_file_list.__len__() > 100:
             del_file_from_dir(error_dir)
-        im.save(error_dir + "//error_num" + str(int(time.time())) + ".png")
+        cv2.imwrite(error_dir + "//error_num" + str(int(time.time())) + ".png",im)
     return read_screen_text
     # return "0"
 
