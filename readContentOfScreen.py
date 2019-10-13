@@ -70,8 +70,7 @@ def resize_img(input_img, width, hight):
 
 
 def read_number_of_screen(screenshot_x_left, screenshot_y_upper, screenshot_x_right, screenshot_y_bottom):
-    # try:
-    # 截屏，图片直接加入内存中,并使用.convert('L')处理为灰度图。
+    # 截屏，图片直接加入内存中
     im = ImageGrab.grab((screenshot_x_left, screenshot_y_upper, screenshot_x_right, screenshot_y_bottom))
     # 灰度以及二值化，然后进行消噪。
     # 本次认为0像素黑点为干扰分析的噪音点，因为OCR想要读取的数字也是被处理为0像素
@@ -108,7 +107,14 @@ def read_number_of_screen(screenshot_x_left, screenshot_y_upper, screenshot_x_ri
 
 
 def read_chi_of_screen(screenshot_x_left, screenshot_y_upper, screenshot_x_right, screenshot_y_bottom):
-    im = ImageGrab.grab((screenshot_x_left, screenshot_y_upper, screenshot_x_right, screenshot_y_bottom)).convert(
-        'L').point(lambda x: 0 if x == 255 else 255)
-    read_screen_text = pytesseract.image_to_string(im, lang='chi_sim')
+    # 截屏，图片直接加入内存中
+    im = ImageGrab.grab((screenshot_x_left, screenshot_y_upper, screenshot_x_right, screenshot_y_bottom))
+    # 灰度以及二值化，然后进行消噪。
+    # 本次认为0像素黑点为干扰分析的噪音点，因为OCR想要读取的数字也是被处理为0像素
+    im = dislodge_noise_point(gray_and_binaryzation(im, 255), 0)
+    # PIL图片转化为cv2图片格式(RGB2BGR)
+    im = cv2.cvtColor(np.asarray(im), cv2.COLOR_RGB2BGR)
+    # 将图像缩放至960*560，方便识别
+    im_cv2 = resize_img(im, 960, 560)
+    read_screen_text = pytesseract.image_to_string(im_cv2, lang='chi_sim')
     return read_screen_text
