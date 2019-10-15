@@ -1,9 +1,9 @@
 import win32api
 import win32con
 from time import sleep
-import keycode
+from commonUtils import keycode
 import numpy as np
-import cvUtils
+from commonUtils import cvUtils
 import cv2 as opencv
 from PIL import ImageGrab
 

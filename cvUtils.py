@@ -5,7 +5,7 @@ import cv2 as opencv
 import numpy as np
 from PIL import ImageGrab
 from repository import templateEntity
-from hwndInfo import get_hwnd_info
+from commonUtils.hwndInfo import get_hwnd_info
 
 # 获取窗口信息
 hwnd_info = get_hwnd_info("魔力宝贝")

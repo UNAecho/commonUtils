@@ -1,7 +1,7 @@
 import time
-import keyboard_event
+from commonUtils import keyboard_event
 import msvcrt
-import windowUtils
+from commonUtils import windowUtils
 import pyperclip
 import os
 
