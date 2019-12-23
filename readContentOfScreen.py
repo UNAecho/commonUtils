@@ -2,10 +2,10 @@ import pytesseract
 from PIL import ImageGrab
 import shutil
 from datetime import datetime
-from screenshot import getScreenshot
+from commonUtils.screenshot import getScreenshot
 import time
 import os
-from FileUtils import del_file_from_dir
+from commonUtils.FileUtils import del_file_from_dir
 import numpy as np
 import cv2
 
