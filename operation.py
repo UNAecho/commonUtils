@@ -9,10 +9,11 @@ from PIL import ImageGrab
 
 
 # 鼠标点击操作
-def mouse_click(x=None, y=None):
+def mouse_click(x=None, y=None,delayflag=True):
     if x is not None and y is not None:
         mouse_move(x, y)
-        sleep(0.2)
+        if delayflag:
+            sleep(0.2)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
     sleep(0.1)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)

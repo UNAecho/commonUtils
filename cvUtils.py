@@ -8,7 +8,7 @@ from repository import templateEntity
 from hwndInfo import get_hwnd_info
 
 # 获取窗口信息
-hwnd_info = get_hwnd_info("魔力宝贝")
+hwnd_info = get_hwnd_info("Human")
 hwnd_array = list(hwnd_info.keys())
 window_info_dict = hwnd_info[hwnd_array[0]]
 window_info_tuple = tuple(window_info_dict.values())
@@ -19,7 +19,10 @@ if __name__ != 'main':
 
 # threshold : 阈值，越接近1，匹配度要求越高。
 # custom_coordinate : 自定义偏移量，用于自行修正坐标偏移量。
-def identify_find_template_or_not(template_file_name, threshold, custom_coordinate=None):
+def identify_find_template_or_not(template_file_name, threshold=None, custom_coordinate=None):
+    # 如果threshold没有传，默认0.8
+    if threshold is None:
+        threshold = 0.8
     # 返回找到的坐标值，调用方需要根据返回值点击
     result_coordinates = {}
     # 读取cv2所使用的BGR模板
