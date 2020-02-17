@@ -5,10 +5,10 @@ import cv2 as opencv
 import numpy as np
 from PIL import ImageGrab
 from repository import templateEntity
-from commonUtils.hwndInfo import get_hwnd_info
+from hwndInfo import get_hwnd_info
 
 # 获取窗口信息
-hwnd_info = get_hwnd_info("Human")
+hwnd_info = get_hwnd_info("明日方舟")
 hwnd_array = list(hwnd_info.keys())
 window_info_dict = hwnd_info[hwnd_array[0]]
 window_info_tuple = tuple(window_info_dict.values())

@@ -1,9 +1,9 @@
 import win32api
 import win32con
 from time import sleep
-from commonUtils import keycode
+import keycode
 import numpy as np
-from commonUtils import cvUtils
+from cvUtils import identify_find_template_or_not
 import cv2 as opencv
 from PIL import ImageGrab
 
@@ -17,6 +17,19 @@ def mouse_click(x=None, y=None,delayflag=True):
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
     sleep(0.1)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+
+
+# 鼠标点击视觉坐标
+def template_click(template_name,delayflag=True):
+    template = identify_find_template_or_not(template_name)
+    if template is not None:
+        mouse_move(template[0], template[1])
+        if delayflag:
+            sleep(0.2)
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
+        sleep(0.1)
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+    return
 
 
 # 带有视觉的鼠标点击操作，如果点击之后没反应，会做出布尔值返回
@@ -91,7 +104,7 @@ def scroll_down():
 
 def wait_to_click(template_file_name):
     while True:
-        aim_coordinate = cvUtils.identify_find_template_or_not(template_file_name, 0.8)
+        aim_coordinate = identify_find_template_or_not(template_file_name, 0.8)
         if aim_coordinate:
             mouse_click(aim_coordinate['x'],['y'])
             break
