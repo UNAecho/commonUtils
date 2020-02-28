@@ -12,6 +12,9 @@ def get_rock():
             break
         tc("start_team_esit.png")
         sleep(2.5)
+        if identify_find_template_or_not("clear.png"):
+            print("没有体力了")
+            break
         tc("fight.png")
         print("开始战斗")
         while True:
@@ -33,3 +36,4 @@ def get_rock():
         print("一轮战斗迭代结束")
         sleep(5)
 get_rock()
+print("任务完成，程序结束")
