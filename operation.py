@@ -62,9 +62,9 @@ def mouse_move(x, y):
 # 输入
 def key_input(str):
     for c in str:
-        win32api.keybd_event(keycode[c],0,0,0)
+        win32api.keybd_event(keycode[c], 0, 0, 0)
         sleep(0.01)
-        win32api.keybd_event(keycode[c],0,win32con.KEYEVENTF_KEYUP,0)
+        win32api.keybd_event(keycode[c], 0, win32con.KEYEVENTF_KEYUP, 0)
         sleep(0.02)
 
 
@@ -92,7 +92,28 @@ def wait_to_click(template_file_name):
     while True:
         aim_coordinate = cvUtils.identify_find_template_or_not(template_file_name, 0.8)
         if aim_coordinate:
-            mouse_click(aim_coordinate['x'],['y'])
+            mouse_click(aim_coordinate['x'], ['y'])
             break
         sleep(1)
     return
+
+
+# 鼠标连点器。监听键盘，用一个键进行开关动作
+def wait_input_and_click(switchkey, endfunctionkey,count):
+    switch = True
+    from pynput import keyboard
+    def keyboard_on_press(key):
+        if (hasattr(key, 'char')):
+            if (key.char == switchkey):
+                n = count
+                while n > 0:
+                    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
+                    sleep(0.2)
+                    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+                    n += -1
+            elif (key.char == endfunctionkey):
+                exit()
+
+    # on_press 为按键触发，on_release为松开按键触发
+    with keyboard.Listener(on_press=keyboard_on_press) as KeyboardListener:
+        KeyboardListener.join()
