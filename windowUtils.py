@@ -16,4 +16,5 @@ def set_foreground_window(window_name):
     for handles_key, handles_value in hwnd_title.items():
         if window_name in handles_value:
             win32gui.SetForegroundWindow(handles_key)
+            time.sleep(1)
             break

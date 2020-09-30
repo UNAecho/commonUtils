@@ -25,7 +25,7 @@ def get_hwnd_info(window_name):
             hwnd_array.append(handles_key)
 
     # # 获取窗口焦点
-    # win32gui.SetForegroundWindow(omyuji_hwnd_array[0])
+    # win32gui.SetForegroundWindow(hwnd_array[0])
 
     for i in range(hwnd_array.__len__()):
         window_x_left, window_y_top, window_x_right, window_y_bottom = win32gui.GetWindowRect(hwnd_array[i])
