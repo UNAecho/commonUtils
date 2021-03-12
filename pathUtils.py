@@ -9,6 +9,6 @@ def get_project_dir():
     if is_debug():
         project_dir = sys.path[2]
     else:
-        project_dir = sys.path[1]
+        project_dir = sys.path[9]
     print("project_dir:" + project_dir)
     return project_dir
