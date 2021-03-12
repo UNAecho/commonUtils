@@ -114,7 +114,6 @@ def wait_to_click(template_file_name):
 
 # 鼠标连点器。监听键盘，用一个键进行开关动作
 def wait_input_and_click(switchkey, endfunctionkey,count):
-    switch = True
     from pynput import keyboard
     def keyboard_on_press(key):
         if (hasattr(key, 'char')):
@@ -125,9 +124,12 @@ def wait_input_and_click(switchkey, endfunctionkey,count):
                     sleep(0.2)
                     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
                     n += -1
-            elif (key.char == endfunctionkey):
-                exit()
+                return
+    def keyboard_on_release(key):
+        if (hasattr(key, 'char')):
+            if (key.char == endfunctionkey):
+                return False
 
-    # on_press 为按键触发，on_release为松开按键触发
-    with keyboard.Listener(on_press=keyboard_on_press) as KeyboardListener:
+    # on_press 为按键触发，on_release为结束触发
+    with keyboard.Listener(on_press=keyboard_on_press,on_release = keyboard_on_release) as KeyboardListener:
         KeyboardListener.join()
