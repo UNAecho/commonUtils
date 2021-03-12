@@ -8,10 +8,11 @@ from repository import templateEntity
 from hwndInfo import get_hwnd_info
 
 # 获取窗口信息
-hwnd_info = get_hwnd_info("明日方舟")
-hwnd_array = list(hwnd_info.keys())
-window_info_dict = hwnd_info[hwnd_array[0]]
-window_info_tuple = tuple(window_info_dict.values())
+hwnd_info = get_hwnd_info("逍遥")
+if hwnd_info:
+    hwnd_array = list(hwnd_info.keys())
+    window_info_dict = hwnd_info[hwnd_array[0]]
+    window_info_tuple = tuple(window_info_dict.values())
 
 if __name__ != 'main':
     template_cv2_entity = templateEntity.generate_all_template_gray_ndarray_of_cv2()
